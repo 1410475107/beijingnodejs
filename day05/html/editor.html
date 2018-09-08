@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>富文本编辑器</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1> 富文本编辑器</h1>
+        <hr>
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/upload">
+            产品详情：
+            <div id="editor">
+                <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+            </div>
+            <textarea style="display:none" class="form-control" value="" id="pinfo" name="pinfo"></textarea>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-default saveheader">保存</button>
+                </div>
+            </div>
+            <input type="hidden" name="header1" id="header1" value="">
+        </form>
+    </div>
+    <script src="http://unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+    <script type="text/javascript">
+        var E = window.wangEditor;
+        var editor = new E('#editor');
+        // 或者 var editor = new E( document.getElementById('editor') )
+        editor.customConfig.uploadImgServer = '/upload';  // 上传图片到服务器  接收图片的接口
+        editor.customConfig.uploadFileName = 'image';     //上传的图片名称
+
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            document.querySelector('#pinfo').value  = html;
+        }
+
+        editor.create();
+    </script>
+</body>
+
+</html>

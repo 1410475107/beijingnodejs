@@ -1,0 +1,44 @@
+<% include header.html%>
+<% include left.html%>
+<style>
+    main{
+        margin-left: 210px;
+    }
+</style>
+<main>
+    <h1><%= stuinfo.stuname%></h1>
+    <h2><%= stuinfo.stunum%></h2>
+    <h2><%= stuinfo.classname%></h2>
+    <h2><%= stuinfo.tel%></h2>
+    <h3><%= stuinfo.hobby%></h3>
+
+    <div><%- stuinfo.info%></div>
+
+    <hr>
+    学生列表信息。。。。。
+    <table border="1">
+        <tr>
+            <td>序号</td>
+            <td>姓名</td>
+            <td>学号</td>
+            <td>手机号</td>
+            <td>时间</td>
+        </tr>
+         <% 
+         let i = 1;
+         let  dt = new Date().toLocaleString();
+         for(let stu of stulist){ 
+         %>
+        <tr>
+            <td><%= i++%></td>
+            <td><%= stu.stuname%></td>
+            <td><%= stu.stunum%></td>
+            <td><%= stu.tel%></td>
+            <td><%= dt%></td>
+        </tr>
+
+        <% } %>
+    </table>
+</main>
+
+<% include footer.html%>

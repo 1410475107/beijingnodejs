@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>文件上传</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .H{color: red;}
+        .uimg{
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-image: url(/image/59.png);
+            background-size: cover;
+            cursor: pointer;
+        }
+        </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1> 头像上传</h1>
+        <hr>
+        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/upload">
+            <div class="form-group">
+                <label for="stuname" class="col-sm-2 control-label">账号：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" value="" id="stuname" name="stuname" placeholder="请输入账号">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="stuname" class="col-sm-2 control-label">头像：</label>
+                <div class="col-sm-10">
+                    <div class="uimg"></div>
+                    <span style="display: none">
+                    <input type="file" class="form-control" value="" id="myheader" accept="image/png"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-default saveheader">保存</button>
+                </div>
+            </div>
+            <input type="hidden" name="header1" id="header1" value="">
+        </form>
+    </div>
+    <script>
+        (function () {
+            let myheader = document.querySelector('#myheader');  //file输入框
+            //选择图片的操作：用户体验
+            let uimg = document.querySelector('.uimg');
+            uimg.onclick = function(){
+                myheader.click();
+            }
+            
+            myheader.onchange = function () {
+                console.log(myheader.files[0]);
+                //AJAX
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/upload');
+                //提交的数据：提交文件必须创建表单数据对象
+                let formdata = new FormData(); // 创建一个表单数据 对象    form表单
+                formdata.append('image', myheader.files[0]); //input  type="file" name="image" value="你选中的文件"
+                formdata.append('username', '付志文');
+                formdata.append('age', '20');
+                //不需要设置请求头
+                xhr.send(formdata);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        uimg.style.backgroundImage = 'url('+data[0].destination + '/' + data[0].filename+')';
+                        document.querySelector('#header1').value = data[0].path;
+                        console.log(data);
+                    }
+                }
+            }
+
+            //点击保存事件
+            let saveheader = document.querySelector('.saveheader');
+            saveheader.onclick = function () {
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/saveheader');
+                
+                let formdata = 'stuname=' + document.querySelector('#stuname').value + '&header=' + document.querySelector('#header1').value;
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                //需要设置请求头
+                xhr.send(formdata);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        console.log(data);
+                    }
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>学生管理系统</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .H{
+        color: #ff0000;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>学生信息列表</h1>
+    <hr>
+    <form class="form-inline" action="" method="GET">
+        <div class="form-group">
+            <label for="stuname">姓名：</label>
+            <input type="text" class="form-control" name="stuname" id="stuname" value="" placeholder="请输入姓名">
+        </div>
+        <button type="button" class="btn btn-default search">查询</button>
+    </form>
+    <hr>
+    <table class="table table-bordered stulist">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>姓名</th>
+                <th>学号</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+    <script>
+        document.querySelector('.search').onclick = function(){
+            //创建一个XHR实例对象
+            let xhr = new XMLHttpRequest();
+            //建立对服务器的调用  调用方法    请求地址
+            let stuname = document.querySelector('#stuname').value;
+            xhr.open('GET', '/search?stuname=' + stuname);
+            //发起请求
+            xhr.send();
+            
+            //找到表格的body
+            let tbody = document.querySelector('.stulist tbody');
+            tbody.innerHTML = '';
+            //状态监听
+            xhr.onreadystatechange = function(){
+                console.log(xhr.readyState);
+                if(xhr.readyState == 4 && xhr.status == 200){
+                    console.log(JSON.parse(xhr.responseText));
+                    console.log(typeof JSON.parse(xhr.responseText));
+                    
+                    //把数据追加到表格
+                    let stu = JSON.parse(xhr.responseText);
+                    //如果查询到学生信息
+                    if(stu.length){
+                        let tr = '';
+                        for (const s of stu) {
+                            tr += `<tr><td>${s.sid}</td><td>${s.stuname.replace(stuname, `<span class="H">${stuname}</span>`)}</td><td>${s.stunum}</td></tr>`;
+                        }
+                        //一次性追加到页面里面去
+                        tbody.innerHTML = tr;
+                        
+                    }
+                }
+            }
+
+        }
+    </script>
+  </body>
+</html>

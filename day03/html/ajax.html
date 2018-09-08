@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ajax</title>
+</head>
+<body>
+    <script>
+        let xhr = new XMLHttpRequest();
+        // 建立对服务器的调用
+        xhr.open('GET', '/ajax');
+        //发起请求
+        xhr.send();
+
+        //状态改变事件
+        xhr.onreadystatechange = function () {
+            console.log(xhr.readyState);
+            //在完成的时候接收服务器响应的数据
+            if(xhr.readyState  == 4 && xhr.status == 200){
+                console.log(xhr.responseText);
+                document.body.innerHTML = xhr.responseText;
+            }
+        }
+    </script>
+</body>
+</html>

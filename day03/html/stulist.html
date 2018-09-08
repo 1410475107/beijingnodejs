@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%=title%>-学生管理系统</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .H{
+        color: #ff0000;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>学生信息列表</h1>
+    <hr>
+    <form class="form-inline" action="/stulist" method="GET">
+        <div class="form-group">
+            <label for="stuname">姓名：</label>
+            <input type="text" class="form-control" name="stuname" id="stuname" value="<%=stuname%>" placeholder="请输入姓名">
+        </div>
+        <button type="submit" class="btn btn-default">查询</button>
+    </form>
+    <hr>
+    <table class="table table-bordered stulist">
+        <tr>
+            <th>序号</th>
+            <th>姓名</th>
+            <th>学号</th>
+            <th>班级</th>
+            <th>手机号</th>
+            <th>爱好</th>
+            <th>操作</th>
+        </tr>
+        <% for(let stu of stulist){ %>
+        <tr>
+            <td><%= stu.sid%></td>
+            <td><%- stu.stuname.replace(stuname, '<span class="H">'+stuname+'</span>')%></td>
+            <td><%= stu.stunum%></td>
+            <td><%= stu.classname%></td>
+            <td><%= stu.tel%></td>
+            <td><%= stu.hobby%></td>
+            <td>
+                <a href="javascript:void(0);" class="delstu" data-sid="<%=stu.sid%>">删除</a>|
+                <a href="/updatestu?sid=<%=stu.sid%>" target="_blank">修改</a>
+            </td>
+        </tr>
+        <% } %>
+       
+    </table>
+    <script>
+        let stutable = document.querySelector('.stulist');
+        stutable.onclick = function(event){
+            //事件代理 事件委托 实现方式   冒泡
+            let delstu = event.target;
+            if(delstu.classList.contains('delstu')){
+                if(!confirm('你是否确定删除？')) return ;
+                //我要知道你要删除的信息的主键
+                let sid = delstu.dataset.sid;
+                console.log(sid);
+                let xhr = new XMLHttpRequest();
+                xhr.open('GET', '/delstu?sid=' + sid);
+                xhr.send();
+                xhr.onreadystatechange = function () {
+                    if(xhr.readyState == 4 && xhr.status == 200){
+                        let data = JSON.parse(xhr.responseText);
+                        {r:'db_err'}
+                        if(data.r == 'db_err'){
+                            alert('服务器端出错，请重新操作');
+                        }else if(data.r == 'success'){
+                            // window.location.reload();
+                            delstu.parentNode.parentNode.remove();
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+  </body>
+</html>

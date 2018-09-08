@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>用户注册</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .H{color: red;}</style>
+</head>
+
+<body>
+    <div class="container">
+    <h1>用户注册</h1>
+    <hr>
+    <form class="form-horizontal" method="POST" action="/regsubmit">
+        <div class="form-group">
+            <label for="stuname" class="col-sm-2 control-label">账号：</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" value="" id="username" name="username" placeholder="请输入账号">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="stunum" class="col-sm-2 control-label">密码：</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" value="" id="passwd" name="passwd" placeholder="请输入密码">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="stuname" class="col-sm-2 control-label">确认密码：</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" value="" id="passwd1" name="passwd1" placeholder="请确认密码">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default regsubmit">确定</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/js/reg.js"></script>
+</body>
+
+</html>
